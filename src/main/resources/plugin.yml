@@ -1,0 +1,5 @@
+name: HycopyCore
+version: ${project.version}
+main: me.liamhbest.hycopycore.Core
+authors: [ auth ]
+description: desc
