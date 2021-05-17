@@ -47,6 +47,7 @@ public class PunishCommand extends Command {
 
                     player.sendMessage(CC.GREEN + "Currently banning " + targetPlayer.getName() + ".");
                     player.openInventory(PunishGUI.getBanGUI(player, targetPlayer));
+                    PunishGUI.currentPunishMenu.put(player.getUniqueId(), targetPlayer.getUniqueId());
 
                 } else {
                     player.sendMessage(CC.translate("&cAre you sure you spelled their name right? The player you entered does not exist in our database."));

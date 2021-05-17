@@ -9,6 +9,7 @@ import me.liamhbest.hycopycore.commands.gmcommands.GmsCommand;
 import me.liamhbest.hycopycore.commands.gmcommands.GmspCommand;
 import me.liamhbest.hycopycore.database.DatabaseManager;
 import me.liamhbest.hycopycore.database.MySQLGetter;
+import me.liamhbest.hycopycore.managers.ChatManager;
 import me.liamhbest.hycopycore.punishments.commands.PunishCommand;
 import me.liamhbest.hycopycore.punishments.commands.punishgui.PunishGUIListener;
 import me.liamhbest.hycopycore.punishments.commands.punishgui.ReasonEnterListener;
@@ -59,6 +60,7 @@ public final class Core extends JavaPlugin {
         pluginManager.registerEvents(new JoinListener(), this);
         pluginManager.registerEvents(new PunishGUIListener(), this);
         pluginManager.registerEvents(new ReasonEnterListener(), this);
+        pluginManager.registerEvents(new ChatManager(), this);
     }
 
     public void registerCommands(){

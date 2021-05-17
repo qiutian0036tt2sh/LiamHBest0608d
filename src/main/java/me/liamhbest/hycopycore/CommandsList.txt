@@ -1,0 +1,10 @@
+/gmc - Sets gamemode in creative
+/gms - Sets gamemode in survival
+/gma - Sets gamemode in adventure
+/gmsp Sets gamemode in spectator
+
+/item [material] - Get 64 of any item
+/item [material] [amount] - Get a specified amount of any item
+
+/punish [IGN] - Open a punishment manager
+/punish ban [IGN] - Open the punishment manager at the ban page

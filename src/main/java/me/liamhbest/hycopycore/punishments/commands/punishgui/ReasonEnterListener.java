@@ -27,7 +27,6 @@ public class ReasonEnterListener implements Listener {
         if (PunishGUIListener.inBanReasonEnter.contains(player.getUniqueId())) {
             event.setCancelled(true);
             String reason = event.getMessage();
-            PunishGUIListener.inBanReasonEnter.remove(player.getUniqueId());
             PunishGUI.banReason.put(player.getUniqueId(), reason);
 
             player.openInventory(PunishGUI.getBanGUI(player, Bukkit.getOfflinePlayer(PunishGUI.currentPunishMenu.get(player.getUniqueId()))));
