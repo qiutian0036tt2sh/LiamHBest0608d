@@ -22,6 +22,7 @@ public class PunishGUI {
     //                     KEY     VALUE
     public static HashMap<UUID, UUID> currentPunishMenu = new HashMap<>();
     public static HashMap<UUID, String> banReason = new HashMap<>();
+    public static ArrayList<UUID> permanentToggleMode = new ArrayList<>();
 
     public static Inventory punishGUI(Player player, OfflinePlayer targetPlayer) {
         Inventory punishGUI = Bukkit.createInventory(null, 54, "Punish Manager (" + targetPlayer.getName() + ")");
@@ -121,19 +122,21 @@ public class PunishGUI {
         profile.setItemMeta(profileMeta);
         inventory.setItem(13, profile);
 
-        ItemStack reason = new ItemBuilder(Material.NAME_TAG)
-                .setDisplayName("&bBan Reason")
-                .setLore(
-                        CC.translate("&7Enter a reason for the ban. The"),
-                        CC.translate("&7reason will be displayed for"),
-                        CC.translate("&7the rule breaker and the staff."),
-                        CC.translate(""),
-                        CC.translate("&dReason: &cNot Set"),
-                        CC.translate(""),
-                        CC.translate("&e-> Click to set")
-                )
-                .build();
-        inventory.setItem(29, reason);
+        if (!PunishGUIListener.inBanReasonEnter.contains(player.getUniqueId())) {
+            ItemStack reason = new ItemBuilder(Material.NAME_TAG)
+                    .setDisplayName("&bBan Reason")
+                    .setLore(
+                            CC.translate("&7Enter a reason for the ban. The"),
+                            CC.translate("&7reason will be displayed for"),
+                            CC.translate("&7the rule breaker and the staff."),
+                            CC.translate(""),
+                            CC.translate("&dReason: &cNot Set"),
+                            CC.translate(""),
+                            CC.translate("&e-> Click to set")
+                    )
+                    .build();
+            inventory.setItem(29, reason);
+        }
 
         ItemStack confirm = new ItemBuilder(Material.SLIME_BALL)
                 .setDisplayName("&aConfirm Ban")
@@ -159,19 +162,38 @@ public class PunishGUI {
                 .build();
         inventory.setItem(31, cannotConfirm);
 
-        ItemStack permanent = new ItemBuilder(Material.BEDROCK)
-                .setDisplayName("&3Mode: &fPermanent")
-                .setLore(
-                        CC.translate("&7The ban mode is currently"),
-                        CC.translate("&7toggled to permanent."),
-                        CC.translate(""),
-                        CC.translate("&7You can change between"),
-                        CC.translate("&7permanent and temporary mode."),
-                        CC.translate(""),
-                        CC.translate("&e-> Click to toggle")
-                )
-                .build();
-        inventory.setItem(33, permanent);
+        if (permanentToggleMode.contains(player.getUniqueId())) {
+            ItemStack permanent = new ItemBuilder(Material.BEDROCK)
+                    .setDisplayName("&3Mode: &fPermanent")
+                    .setLore(
+                            CC.translate("&7The ban mode is currently"),
+                            CC.translate("&7toggled to permanent."),
+                            CC.translate(""),
+                            CC.translate("&7You can change between"),
+                            CC.translate("&7permanent and temporary mode."),
+                            CC.translate(""),
+                            CC.translate("&e-> Click to toggle")
+                    )
+                    .build();
+            inventory.setItem(33, permanent);
+        } else {
+            ItemStack temporary = new ItemBuilder(Material.WATCH)
+                    .setDisplayName("&3Mode: &fTemporary")
+                    .setLore(
+                            CC.translate("&7The ban mode is currently"),
+                            CC.translate("&7toggled to temporary."),
+                            CC.translate(""),
+                            CC.translate("&7You can change between"),
+                            CC.translate("&7permanent and temporary mode."),
+                            CC.translate(""),
+                            CC.translate("&dTime: &cNot Set"),
+                            CC.translate(""),
+                            CC.translate("&e-> Click to toggle"),
+                            CC.translate("&e-> Right Click to set time")
+                    )
+                    .build();
+            inventory.setItem(33, temporary);
+        }
 
         ItemStack close = new ItemBuilder(Material.BARRIER)
                 .setDisplayName("&cClose")

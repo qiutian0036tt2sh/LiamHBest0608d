@@ -38,6 +38,26 @@ public class PunishCommand extends Command {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("ban")) {
+
+            if (args.length > 1){
+                DatabaseManager databaseManager = Core.instance.databaseManager;
+                if (databaseManager.userExists(Bukkit.getOfflinePlayer(args[1]), "playerpunishmentdata")) {
+                    OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(args[1]);
+
+                    player.sendMessage(CC.GREEN + "Currently banning " + targetPlayer.getName() + ".");
+                    player.openInventory(PunishGUI.getBanGUI(player, targetPlayer));
+
+                } else {
+                    player.sendMessage(CC.translate("&cAre you sure you spelled their name right? The player you entered does not exist in our database."));
+                }
+            } else {
+                player.sendMessage(CC.RED + "Missing arguments! Please specify a player to ban them!");
+            }
+
+            return true;
+        }
+
         DatabaseManager databaseManager = Core.instance.databaseManager;
         if (databaseManager.userExists(Bukkit.getOfflinePlayer(args[0]), "playerpunishmentdata")) {
             OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(args[0]);

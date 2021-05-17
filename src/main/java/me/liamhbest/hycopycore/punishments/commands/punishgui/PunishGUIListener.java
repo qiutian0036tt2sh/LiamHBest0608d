@@ -1,6 +1,8 @@
 package me.liamhbest.hycopycore.punishments.commands.punishgui;
 
 import me.liamhbest.hycopycore.Core;
+import me.liamhbest.hycopycore.punishments.Punishment;
+import me.liamhbest.hycopycore.punishments.PunishmentType;
 import me.liamhbest.hycopycore.ranks.PlayerRank;
 import me.liamhbest.hycopycore.utility.CC;
 import me.liamhbest.hycopycore.utility.HycopyPlayer;
@@ -91,19 +93,36 @@ public class PunishGUIListener implements Listener {
                     if (event.getCurrentItem().getItemMeta().getLore().get(4)
                             .equalsIgnoreCase(CC.translate("&dReason: &cNot Set"))) {
                         player.closeInventory();
-                        player.sendMessage(CC.GREEN + "Please enter the reason in chat:");
+                        player.sendMessage(CC.GREEN + "Please enter the ban reason in chat:");
 
-                        Core.instance.getPacketSender().sendTitlePacket(player,
-                                2, 20, 2, "Testing", "Testing Again");
-                        player.sendMessage("After 1");
                         inBanReasonEnter.add(player.getUniqueId());
-                        player.sendMessage("After 2");
                     }
                 }
 
                 if (slot == 33){
-                    if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(CC.translate("&3Mode: &fTemporary"))) {
-                        //Set to temporary
+                    if (PunishGUI.permanentToggleMode.contains(player.getUniqueId())) {
+                        PunishGUI.permanentToggleMode.remove(player.getUniqueId());
+
+                        ItemStack temporary = new ItemBuilder(Material.WATCH)
+                                .setDisplayName("&3Mode: &fTemporary")
+                                .setLore(
+                                        CC.translate("&7The ban mode is currently"),
+                                        CC.translate("&7toggled to temporary."),
+                                        CC.translate(""),
+                                        CC.translate("&7You can change between"),
+                                        CC.translate("&7permanent and temporary mode."),
+                                        CC.translate(""),
+                                        CC.translate("&dTime: &cNot Set"),
+                                        CC.translate(""),
+                                        CC.translate("&e-> Click to toggle"),
+                                        CC.translate("&e-> Right Click to set time")
+                                )
+                                .build();
+                        banGUI.setItem(33, temporary);
+
+                    } else {
+                        PunishGUI.permanentToggleMode.add(player.getUniqueId());
+
                         if (event.getClick().isRightClick()) {
                             player.sendMessage("Setting time...");
                             return;
@@ -122,23 +141,19 @@ public class PunishGUIListener implements Listener {
                                 )
                                 .build();
                         banGUI.setItem(33, permanent);
+                    }
+                }
 
+                if (slot == 31){
+                    if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(CC.translate("&cConfirm"))) {
+                        //Cannot confirm
+                        player.sendMessage(CC.RED + "You cannot confirm the ban yet! Please fill in all the ban settings before.");
                     } else {
-                        //Set to permanent
-                        ItemStack temporary = new ItemBuilder(Material.WATCH)
-                                .setDisplayName("&3Mode: &fTemporary")
-                                .setLore(
-                                        CC.translate("&7The ban mode is currently"),
-                                        CC.translate("&7toggled to temporary."),
-                                        CC.translate(""),
-                                        CC.translate("&7You can change between"),
-                                        CC.translate("&7permanent and temporary mode."),
-                                        CC.translate(""),
-                                        CC.translate("&e-> Click to toggle"),
-                                        CC.translate("&e-> Right Click to set time")
-                                )
-                                .build();
-                        banGUI.setItem(33, temporary);
+                        HycopyPlayer hycopyPlayer = new HycopyPlayer(Bukkit.getOfflinePlayer(PunishGUI.currentPunishMenu.get(player.getUniqueId())));
+                        Punishment punishment = new Punishment(PunishmentType.BAN);
+
+                        hycopyPlayer.getPunishmentManager().punish(punishment);
+
                     }
                 }
 

@@ -14,7 +14,6 @@ import me.liamhbest.hycopycore.punishments.commands.punishgui.PunishGUIListener;
 import me.liamhbest.hycopycore.punishments.commands.punishgui.ReasonEnterListener;
 import me.liamhbest.hycopycore.ranks.RankCommand;
 import me.liamhbest.hycopycore.utility.JoinListener;
-import me.liamhbest.hycopycore.utility.packets.PacketSender;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
@@ -29,15 +28,9 @@ public final class Core extends JavaPlugin {
     public MySQLGetter mysql;
     public DatabaseManager databaseManager;
 
-    private PacketSender packetSender;
-    public PacketSender getPacketSender() {
-        return packetSender;
-    }
-
     @Override
     public void onEnable() {
         instance = this;
-        packetSender = new PacketSender();
 
         this.mysql = new MySQLGetter();
         this.databaseManager = new DatabaseManager(instance);

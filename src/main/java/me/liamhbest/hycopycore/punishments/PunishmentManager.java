@@ -52,6 +52,10 @@ public class PunishmentManager {
         }
     }
 
+    public void punish(Punishment punishment){
+
+    }
+
 
 
 }
