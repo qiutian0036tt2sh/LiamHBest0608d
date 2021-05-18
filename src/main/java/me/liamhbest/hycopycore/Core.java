@@ -22,6 +22,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public final class Core extends JavaPlugin {
 
@@ -48,6 +51,24 @@ public final class Core extends JavaPlugin {
         DatabaseManager databaseManager = Core.instance.databaseManager;
         databaseManager.createTable("rankdata", "RANK VARCHAR(100)");
         databaseManager.createTable("playerpunishmentdata", "BANNED BOOLEAN", "MUTED BOOLEAN", "PERM_BANNED BOOLEAN", "BAN_EXPIRE LONG", "MUTE_EXPIRE LONG", "REASON_BAN VARCHAR(300)", "REASON_MUTE VARCHAR(300)", "BAN_ID VARCHAR(10)", "MUTE_ID VARCHAR(10)");
+
+        try {
+            PreparedStatement ps = mysql.getConnection().prepareStatement("SELECT * FROM " + "serverdata" + " WHERE ID=?");
+            ps.setString(1, "mainnetwork");
+
+            ResultSet resultSet = ps.executeQuery();
+            if (!resultSet.next()){
+                PreparedStatement ps1 = mysql.getConnection().prepareStatement("INSERT INTO " + "serverdata" + " "
+                        + "(ID,CHAT_DELAY,SAME_MESSAGE_CHECK) VALUES (?,?,?)");
+                ps1.setString(1, "mainnetwork");
+                ps1.setInt(2, 3);
+                ps1.setBoolean(3, true);
+                ps1.executeUpdate();
+            }
+
+        } catch (SQLException exception){
+            exception.printStackTrace();
+        }
     }
 
     @Override

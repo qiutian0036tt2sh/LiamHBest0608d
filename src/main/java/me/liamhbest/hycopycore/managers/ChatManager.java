@@ -1,5 +1,6 @@
 package me.liamhbest.hycopycore.managers;
 
+import me.liamhbest.hycopycore.Core;
 import me.liamhbest.hycopycore.punishments.commands.punishgui.PunishGUIListener;
 import me.liamhbest.hycopycore.ranks.PlayerRank;
 import me.liamhbest.hycopycore.utility.CC;
@@ -11,6 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -40,20 +44,38 @@ public class ChatManager implements Listener {
             }
         }
 
+        lastMessage.put(player.getUniqueId(), event.getMessage());
+        int delay = 3;
+
+        try {
+            PreparedStatement ps = Core.instance.mysql.getConnection().prepareStatement("SELECT " + "CHAT_DELAY" + " FROM " + "ID" + " WHERE ID=?");
+            ps.setString(1, "mainnetwork");
+            ResultSet resultSet = ps.executeQuery();
+            Object result;
+
+            if (resultSet.next()){
+                result = resultSet.getObject("CHAT_DELAY");
+                delay = (int) result;
+            }
+
+        } catch (SQLException exception){
+            exception.printStackTrace();
+            return;
+        }
+
         if (chatCooldown.containsKey(player.getUniqueId())) {
             if (chatCooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
                 //Still have time left on cooldown
                 if (hycopyPlayer.getRankManager().getRank() == PlayerRank.DEFAULT){
                     player.sendMessage(CC.GOLD + CC.STRIKE_THROUGH + "------------------------------------------");
-                    player.sendMessage(CC.RED + "You can only chat once every 3 seconds! Ranked users bypass this restriction!");
+                    player.sendMessage(CC.RED + "You can only chat once every " + delay + " seconds! Ranked users bypass this restriction!");
                     player.sendMessage(CC.GOLD + CC.STRIKE_THROUGH + "------------------------------------------");
                     return;
                 }
             }
         }
 
-        lastMessage.put(player.getUniqueId(), event.getMessage());
-        chatCooldown.put(player.getUniqueId(), System.currentTimeMillis() + (3 * 1000));
+        chatCooldown.put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
         for (Player target : Bukkit.getOnlinePlayers()){
             if (hycopyPlayer.getRankManager().getRank() == PlayerRank.DEFAULT){
                 target.sendMessage(PlayerRank.DEFAULT.getPrefixWithSpace()
