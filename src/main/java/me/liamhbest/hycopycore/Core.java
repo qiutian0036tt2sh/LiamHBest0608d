@@ -3,6 +3,7 @@ package me.liamhbest.hycopycore;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.liamhbest.hycopycore.commands.ItemCommand;
+import me.liamhbest.hycopycore.commands.SetChatDelayCommand;
 import me.liamhbest.hycopycore.commands.gmcommands.GmaCommand;
 import me.liamhbest.hycopycore.commands.gmcommands.GmcCommand;
 import me.liamhbest.hycopycore.commands.gmcommands.GmsCommand;
@@ -10,9 +11,6 @@ import me.liamhbest.hycopycore.commands.gmcommands.GmspCommand;
 import me.liamhbest.hycopycore.database.DatabaseManager;
 import me.liamhbest.hycopycore.database.MySQLGetter;
 import me.liamhbest.hycopycore.managers.ChatManager;
-import me.liamhbest.hycopycore.punishments.commands.PunishCommand;
-import me.liamhbest.hycopycore.punishments.commands.punishgui.PunishGUIListener;
-import me.liamhbest.hycopycore.punishments.commands.punishgui.ReasonEnterListener;
 import me.liamhbest.hycopycore.ranks.RankCommand;
 import me.liamhbest.hycopycore.utility.JoinListener;
 import org.bukkit.Bukkit;
@@ -50,7 +48,7 @@ public final class Core extends JavaPlugin {
 
         DatabaseManager databaseManager = Core.instance.databaseManager;
         databaseManager.createTable("rankdata", "RANK VARCHAR(100)");
-        databaseManager.createTable("playerpunishmentdata", "BANNED BOOLEAN", "MUTED BOOLEAN", "PERM_BANNED BOOLEAN", "BAN_EXPIRE LONG", "MUTE_EXPIRE LONG", "REASON_BAN VARCHAR(300)", "REASON_MUTE VARCHAR(300)", "BAN_ID VARCHAR(10)", "MUTE_ID VARCHAR(10)");
+        databaseManager.createTable("disguisedata", "NICKED BOOLEAN", "VANISHED BOOLEAN", "NICKNAME VARCHAR(100)", "NICKRANK VARCHAR(100)", "NICKSKIN VARCHAR(100)");
 
         try {
             PreparedStatement ps = mysql.getConnection().prepareStatement("SELECT * FROM " + "serverdata" + " WHERE ID=?");
@@ -79,8 +77,6 @@ public final class Core extends JavaPlugin {
     public void registerListeners(){
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new JoinListener(), this);
-        pluginManager.registerEvents(new PunishGUIListener(), this);
-        pluginManager.registerEvents(new ReasonEnterListener(), this);
         pluginManager.registerEvents(new ChatManager(), this);
     }
 
@@ -91,7 +87,7 @@ public final class Core extends JavaPlugin {
         commandMap.register(pluginName, new GmaCommand());
         commandMap.register(pluginName, new RankCommand());
         commandMap.register(pluginName, new ItemCommand());
-        commandMap.register(pluginName, new PunishCommand());
+        commandMap.register(pluginName, new SetChatDelayCommand());
     }
 
     @Getter

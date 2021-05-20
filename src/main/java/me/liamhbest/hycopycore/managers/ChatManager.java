@@ -1,7 +1,6 @@
 package me.liamhbest.hycopycore.managers;
 
 import me.liamhbest.hycopycore.Core;
-import me.liamhbest.hycopycore.punishments.commands.punishgui.PunishGUIListener;
 import me.liamhbest.hycopycore.ranks.PlayerRank;
 import me.liamhbest.hycopycore.utility.CC;
 import me.liamhbest.hycopycore.utility.HycopyPlayer;
@@ -30,11 +29,6 @@ public class ChatManager implements Listener {
         PlayerRank rank = hycopyPlayer.getRankManager().getRank();
         event.setCancelled(true);
 
-        if (PunishGUIListener.inBanReasonEnter.contains(player.getUniqueId())) {
-            PunishGUIListener.inBanReasonEnter.remove(player.getUniqueId());
-            return;
-        }
-
         if (event.getMessage().equalsIgnoreCase(lastMessage.get(player.getUniqueId()))) {
             if (!rank.isStaffRank()){
                 player.sendMessage(CC.GOLD + CC.STRIKE_THROUGH + "------------------------------------------");
@@ -48,7 +42,7 @@ public class ChatManager implements Listener {
         int delay = 3;
 
         try {
-            PreparedStatement ps = Core.instance.mysql.getConnection().prepareStatement("SELECT " + "CHAT_DELAY" + " FROM " + "ID" + " WHERE ID=?");
+            PreparedStatement ps = Core.instance.mysql.getConnection().prepareStatement("SELECT " + "CHAT_DELAY" + " FROM " + "serverdata" + " WHERE ID=?");
             ps.setString(1, "mainnetwork");
             ResultSet resultSet = ps.executeQuery();
             Object result;
@@ -67,8 +61,13 @@ public class ChatManager implements Listener {
             if (chatCooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
                 //Still have time left on cooldown
                 if (hycopyPlayer.getRankManager().getRank() == PlayerRank.DEFAULT){
+
                     player.sendMessage(CC.GOLD + CC.STRIKE_THROUGH + "------------------------------------------");
-                    player.sendMessage(CC.RED + "You can only chat once every " + delay + " seconds! Ranked users bypass this restriction!");
+                    if (delay == 1){
+                        player.sendMessage(CC.RED + "You can only chat once every " + delay + " second! Ranked users bypass this restriction!");
+                    } else {
+                        player.sendMessage(CC.RED + "You can only chat once every " + delay + " seconds! Ranked users bypass this restriction!");
+                    }
                     player.sendMessage(CC.GOLD + CC.STRIKE_THROUGH + "------------------------------------------");
                     return;
                 }

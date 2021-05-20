@@ -1,7 +1,7 @@
 package me.liamhbest.hycopycore.utility;
 
 import lombok.Getter;
-import me.liamhbest.hycopycore.punishments.PunishmentManager;
+import me.liamhbest.hycopycore.disguise.DisguiseManager;
 import me.liamhbest.hycopycore.ranks.RankManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -15,16 +15,16 @@ public class HycopyPlayer {
     private final RankManager rankManager;
 
     @Getter
-    private final PunishmentManager punishmentManager;
+    private final MetadataManager metadataManager;
 
     @Getter
-    private final MetadataManager metadataManager;
+    private final DisguiseManager disguiseManager;
 
     public HycopyPlayer(OfflinePlayer offlinePlayer){
         this.offlinePlayer = offlinePlayer;
         this.rankManager = new RankManager(offlinePlayer);
-        this.punishmentManager = new PunishmentManager(offlinePlayer);
         this.metadataManager = new MetadataManager(offlinePlayer);
+        this.disguiseManager = new DisguiseManager(offlinePlayer);
     }
 
     public Player getPlayer(){
