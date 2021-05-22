@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.liamhbest.hycopycore.disguise.DisguiseManager;
 import me.liamhbest.hycopycore.ranks.RankManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -33,6 +34,10 @@ public class HycopyPlayer {
         } else {
             return null;
         }
+    }
+
+    public void sendMessage(String message){
+        getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
 }

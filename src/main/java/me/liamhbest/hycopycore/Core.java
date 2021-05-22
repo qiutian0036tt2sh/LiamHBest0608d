@@ -10,6 +10,7 @@ import me.liamhbest.hycopycore.commands.gmcommands.GmsCommand;
 import me.liamhbest.hycopycore.commands.gmcommands.GmspCommand;
 import me.liamhbest.hycopycore.database.DatabaseManager;
 import me.liamhbest.hycopycore.database.MySQLGetter;
+import me.liamhbest.hycopycore.disguise.DisguiseSystem;
 import me.liamhbest.hycopycore.managers.ChatManager;
 import me.liamhbest.hycopycore.ranks.RankCommand;
 import me.liamhbest.hycopycore.utility.JoinListener;
@@ -78,6 +79,7 @@ public final class Core extends JavaPlugin {
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new JoinListener(), this);
         pluginManager.registerEvents(new ChatManager(), this);
+        pluginManager.registerEvents(new DisguiseSystem(), this);
     }
 
     public void registerCommands(){
