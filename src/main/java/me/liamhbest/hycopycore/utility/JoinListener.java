@@ -20,19 +20,6 @@ public class JoinListener implements Listener {
             databaseManager.setField(player, "rankdata", "RANK", PlayerRank.DEFAULT.name());
         }
 
-        if (!databaseManager.userExists(player, "playerpunishmentdata")) {
-            databaseManager.createUser(player, "playerpunishmentdata");
-            databaseManager.setField(player, "playerpunishmentdata", "BANNED", false);
-            databaseManager.setField(player, "playerpunishmentdata", "MUTED", false);
-            databaseManager.setField(player, "playerpunishmentdata", "PERM_BANNED", false);
-            databaseManager.setField(player, "playerpunishmentdata", "BAN_EXPIRE", 0L);
-            databaseManager.setField(player, "playerpunishmentdata", "MUTE_EXPIRE", 0L);
-            databaseManager.setField(player, "playerpunishmentdata", "REASON_BAN", null);
-            databaseManager.setField(player, "playerpunishmentdata", "REASON_MUTE", null);
-            databaseManager.setField(player, "playerpunishmentdata", "BAN_ID", null);
-            databaseManager.setField(player, "playerpunishmentdata", "MUTE_ID", null);
-        }
-
     }
 
 }

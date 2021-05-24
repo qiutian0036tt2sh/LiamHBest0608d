@@ -11,6 +11,8 @@ import me.liamhbest.hycopycore.commands.gmcommands.GmspCommand;
 import me.liamhbest.hycopycore.database.DatabaseManager;
 import me.liamhbest.hycopycore.database.MySQLGetter;
 import me.liamhbest.hycopycore.disguise.DisguiseSystem;
+import me.liamhbest.hycopycore.disguise.nick.NickCommand;
+import me.liamhbest.hycopycore.disguise.vanish.VanishCommand;
 import me.liamhbest.hycopycore.managers.ChatManager;
 import me.liamhbest.hycopycore.ranks.RankCommand;
 import me.liamhbest.hycopycore.utility.JoinListener;
@@ -90,6 +92,8 @@ public final class Core extends JavaPlugin {
         commandMap.register(pluginName, new RankCommand());
         commandMap.register(pluginName, new ItemCommand());
         commandMap.register(pluginName, new SetChatDelayCommand());
+        commandMap.register(pluginName, new VanishCommand());
+        commandMap.register(pluginName, new NickCommand());
     }
 
     @Getter

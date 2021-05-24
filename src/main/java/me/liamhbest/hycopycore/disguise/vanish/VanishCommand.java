@@ -21,13 +21,12 @@ public class VanishCommand extends BukkitCommand {
         HycopyPlayer hycopyPlayer = new HycopyPlayer(player);
 
         if (!hycopyPlayer.getRankManager().getRank().isStaffRank()
-                && hycopyPlayer.getRankManager().getRank() != PlayerRank.ADMIN) {
+                && hycopyPlayer.getRankManager().getRank() != PlayerRank.YOUTUBE) {
             hycopyPlayer.sendMessage("&cYou do not have permission to use this command!");
             return true;
         }
 
-
-        if (!Bukkit.getServer().getName().contains("lobby")) {
+        if (!Bukkit.getServerName().contains("lobby")) {
             hycopyPlayer.sendMessage("&cThis cannot be performed alive in-game!");
             return true;
         }
@@ -45,6 +44,15 @@ public class VanishCommand extends BukkitCommand {
             // Vanish Player
             hycopyPlayer.getDisguiseManager().setVanished(true);
             hycopyPlayer.sendMessage("&aYou vanished!");
+
+            for (Player targetPlayer : Bukkit.getOnlinePlayers()){
+                HycopyPlayer targetHycopyPlayer = new HycopyPlayer(targetPlayer);
+
+                if (!targetHycopyPlayer.getRankManager().getRank().isStaffRank()) {
+                    targetPlayer.hidePlayer(player);
+                }
+
+            }
 
             DisguiseSystem.sendActionBar(player);
         }
